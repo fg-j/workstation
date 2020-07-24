@@ -1,28 +1,28 @@
 provider "google" {
-  project     = "${var.project}"
+  project     = var.project
   region      = "us-central1"
-  credentials = "${var.service_account_key}"
+  credentials = var.service_account_key
 
   version = "~> 2.5"
 }
 
 variable "project" {
-  type = "string"
+  type = string
 }
 
 variable "vm_name" {
-  type = "string"
+  type = string
 }
 
 variable "service_account_key" {
-  type = "string"
+  type = string
 }
 
 resource "google_compute_instance" "default" {
-  name         = "${var.vm_name}"
+  name         = var.vm_name
   machine_type = "n1-standard-8"
   zone         = "us-central1-a"
-  tags = ["${var.vm_name}"]
+  tags = [var.vm_name]
 
   boot_disk {
     initialize_params {
@@ -39,11 +39,9 @@ resource "google_compute_instance" "default" {
     network = "default"
 
     access_config {
-      nat_ip = "${google_compute_address.ip_address.address}"
+      nat_ip = google_compute_address.ip_address.address
     }
   }
-
-  metadata_startup_script = "echo hi > /test.txt"
 
   metadata = {
     ssh-keys = "${format("ubuntu:%s", tls_private_key.my-key.public_key_openssh)}"
@@ -62,7 +60,7 @@ resource "tls_private_key" "my-key" {
 resource "google_compute_firewall" "external" {
   name        = "${var.vm_name}-external"
   network     = "default"
-  target_tags = ["${var.vm_name}"]
+  target_tags = [var.vm_name]
 
   allow {
     protocol = "icmp"
@@ -74,13 +72,12 @@ resource "google_compute_firewall" "external" {
   }
 }
 
-
 output "ssh_private_key" {
   sensitive = true
-  value     = "${tls_private_key.my-key.private_key_pem}"
+  value     = tls_private_key.my-key.private_key_pem
 }
 
 output "vm_ip" {
-  value = "${google_compute_address.ip_address.address}"
+  value = google_compute_address.ip_address.address
 }
 
