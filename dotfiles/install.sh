@@ -76,7 +76,6 @@ function install::packages() {
 
 	DEBIAN_FRONTEND=noninteractive apt-get install -y bash-completion
 	DEBIAN_FRONTEND=noninteractive apt-get install -y jq
-	DEBIAN_FRONTEND=noninteractive apt-get install -y neovim
 	DEBIAN_FRONTEND=noninteractive apt-get install -y gcc
 
 	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
