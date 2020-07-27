@@ -40,7 +40,7 @@ function install::go() {
 }
 
 function install::docker() {
-	apt-get install \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y \
 		apt-transport-https \
 		ca-certificates \
 		curl \
@@ -54,23 +54,24 @@ function install::docker() {
 		"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
 		$(lsb_release -cs) stable"
 
-	apt-get update
-	apt-get install docker-ce docker-ce-cli containerd.io
+	DEBIAN_FRONTEND=noninteractive apt-get -y update
+	DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io
 }
 
 function install::packages() {
-	apt-get update
-	apt-get -y upgrade
+	DEBIAN_FRONTEND=noninteractive apt-get -y update
+	DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 
-	apt-get install bash-completion
-	apt-get install jq
-	apt-get install neovim
+	DEBIAN_FRONTEND=noninteractive apt-get install -y bash-completion
+	DEBIAN_FRONTEND=noninteractive apt-get install -y jq
+	DEBIAN_FRONTEND=noninteractive apt-get install -y neovim
+	DEBIAN_FRONTEND=noninteractive apt-get install -y gcc
 
 	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-	sudo apt-get install -y nodejs
+	DEBIAN_FRONTEND=noninteractive sudo apt-get install -y nodejs
 
-	apt-get install -y shellcheck
-	sudo apt install silversearcher-ag
+	DEBIAN_FRONTEND=noninteractive apt-get install -y shellcheck
+	DEBIAN_FRONTEND=noninteractive apt-get install -y silversearcher-ag
 }
 
 main
