@@ -17,18 +17,24 @@ function main() {
 	install::packages
 	install::go
 	install::docker
-
-	curl -fLo "${HOME}/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	mkdir -p "${HOME}/.config/nvim"
-	ln -sf "${PROGDIR}/init.vim" "${HOME}/.config/nvim/init.vim"
-	nvim -c "PlugInstall" -c "PlugUpdate" -c "qall" --headless
-	nvim -c "GoInstallBinaries" -c "GoUpdateBinaries" -c "qall!" --headless
+	install::neovim
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
 	go get -u github.com/onsi/gomega
 
 	echo "Success!"
+}
+
+function install::neovim() {
+	pip3 install --upgrade pip
+	pip3 install --user neovim
+
+	curl -fLo "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	mkdir -p "${HOME}/.config/nvim"
+	ln -sf "${PROGDIR}/init.vim" "${HOME}/.config/nvim/init.vim"
+	nvim -c "PlugInstall" -c "PlugUpdate" -c "qall" --headless
+	nvim -c "GoInstallBinaries" -c "GoUpdateBinaries" -c "qall!" --headless
 }
 
 function install::go() {
@@ -72,6 +78,7 @@ function install::packages() {
 
 	DEBIAN_FRONTEND=noninteractive apt-get install -y shellcheck
 	DEBIAN_FRONTEND=noninteractive apt-get install -y silversearcher-ag
+	DEBIAN_FRONTEND=noninteractive apt-get install -y python3-pip
 }
 
 main
