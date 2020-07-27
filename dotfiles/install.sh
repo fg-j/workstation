@@ -14,15 +14,15 @@ function main() {
 		git clone https://github.com/chriskempson/base16-shell.git "${HOME}/.config/colorschemes"
 	fi
 
+	install::packages
+	install::go
+	install::docker
+
 	curl -fLo "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	mkdir -p "${HOME}/.config/nvim"
 	ln -sf "${PROGDIR}/init.vim" "${HOME}/.config/nvim/init.vim"
 	nvim -c "PlugInstall" -c "PlugUpdate" -c "qall" --headless
 	nvim -c "GoInstallBinaries" -c "GoUpdateBinaries" -c "qall!" --headless
-
-	install::packages
-	install::go
-	install::docker
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
@@ -58,7 +58,7 @@ function install::docker() {
 	apt-get install docker-ce docker-ce-cli containerd.io
 }
 
-function install:packages() {
+function install::packages() {
 	apt-get update
 	apt-get -y upgrade
 
