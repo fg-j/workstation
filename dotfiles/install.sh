@@ -27,8 +27,14 @@ function main() {
 }
 
 function install::neovim() {
+	wget --quiet https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage --output-document nvim
+	chmod +x nvim
+	chown root:root nvim
+	mv nvim /usr/bin
+
 	pip3 install --upgrade pip
 	pip3 install --user neovim
+	chown -R $USER:$USER /home/ubuntu/.local
 
 	curl -fLo "${HOME}/.local/share/nvim/site/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	mkdir -p "${HOME}/.config/nvim"
