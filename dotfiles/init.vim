@@ -16,7 +16,6 @@ call plug#end()
 
 syntax on " Syntax highlighting FTW
 set background=dark " Set background to dark for base16
-colorscheme tomorrow-night " Set colorscheme to hybrid
 set directory=/tmp " Move swp to a standard location
 :let mapleader = ',' " Remap the leader key
 
@@ -116,8 +115,6 @@ if executable('ag')
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 
-  " bind Ag command
-  command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 endif
 
 " hit the space bar to remove search highlights

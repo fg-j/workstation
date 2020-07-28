@@ -18,6 +18,7 @@ function main() {
 
     # setup path
     export PATH="${GOPATH}/bin:${PATH}"
+    export PATH="/usr/local/go/bin:${PATH}"
 
     export EDITOR="nvim"
 
