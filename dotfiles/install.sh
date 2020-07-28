@@ -18,6 +18,7 @@ function main() {
 	install::go
 	install::docker
 	install::neovim
+	install::lpass
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
@@ -90,6 +91,35 @@ function install::packages() {
 	DEBIAN_FRONTEND=noninteractive apt-get install -y shellcheck
 	DEBIAN_FRONTEND=noninteractive apt-get install -y silversearcher-ag
 	DEBIAN_FRONTEND=noninteractive apt-get install -y python3-pip
+}
+
+function install::lpass() {
+	apt-get --no-install-recommends -yqq install \
+		bash-completion \
+		build-essential \
+		cmake \
+		libcurl4  \
+		libcurl4-openssl-dev  \
+		libssl-dev  \
+		libxml2 \
+		libxml2-dev  \
+		libssl1.1 \
+		pkg-config \
+		ca-certificates \
+		xclip
+
+	curl -L -o /tmp/lpass.tgz "https://github.com/lastpass/lastpass-cli/releases/download/v1.3.3/lastpass-cli-1.3.3.tar.gz"
+	mkdir -p /tmp/lpass
+	tar -xvf /tmp/lpass.tgz -C /tmp/lpass
+	pushd /tmp/lpass > /dev/null
+		make
+	popd > /dev/null
+	chmod +x /tmp/lpass/build/lpass
+	mv /tmp/lpass/build/lpass /usr/local/bin
+
+	rm -rf /tmp/lpass
+	rm -rf /tmp/lpass.tgz
+
 }
 
 main
