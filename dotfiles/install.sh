@@ -1,4 +1,5 @@
-#!/bin/bash -exu
+#!/bin/bash
+set -eu
 
 readonly PROGDIR="$(cd "$(dirname "${0}")" && pwd)"
 readonly WORKSPACE="${HOME}/workspace"
@@ -30,6 +31,8 @@ function main() {
 }
 
 function install::neovim() {
+	echo "* Installing neovim"
+
 	wget --quiet https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage --output-document nvim
 	chmod +x nvim
 	chown root:root nvim
@@ -47,6 +50,8 @@ function install::neovim() {
 }
 
 function install::go() {
+	echo "* Installing go"
+
 	curl -L -o /tmp/golang.tgz "https://dl.google.com/go/$(curl https://golang.org/VERSION?m=text).linux-amd64.tar.gz"
 	tar -C /usr/local -xzf /tmp/golang.tgz
 	export PATH=$PATH:/usr/local/go/bin
@@ -55,7 +60,9 @@ function install::go() {
 }
 
 function install::docker() {
-	DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	echo "* Installing docker"
+
+	apt-get install -y \
 		apt-transport-https \
 		ca-certificates \
 		curl \
@@ -69,31 +76,34 @@ function install::docker() {
 		"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
 		$(lsb_release -cs) stable"
 
-	DEBIAN_FRONTEND=noninteractive apt-get -y update
-	DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io
+	apt-get -y update
+	apt-get install -y docker-ce docker-ce-cli containerd.io
 
 	usermod -aG docker ubuntu
 }
 
 function install::packages() {
-	DEBIAN_FRONTEND=noninteractive apt-get -y update
-	DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+	echo "* Installing some useful programs"
 
-	DEBIAN_FRONTEND=noninteractive apt-get install -y bash-completion
-	DEBIAN_FRONTEND=noninteractive apt-get install -y jq
-	DEBIAN_FRONTEND=noninteractive apt-get install -y gcc
+	apt-get -y update
+	apt-get -y upgrade
+
+	apt-get install -y bash-completion
+	apt-get install -y jq
+	apt-get install -y gcc
 
 	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-	DEBIAN_FRONTEND=noninteractive sudo apt-get install -y nodejs
+	sudo apt-get install -y nodejs
 
-	DEBIAN_FRONTEND=noninteractive apt-get install -y shellcheck
-	DEBIAN_FRONTEND=noninteractive apt-get install -y silversearcher-ag
-	DEBIAN_FRONTEND=noninteractive apt-get install -y python3-pip
+	apt-get install -y shellcheck
+	apt-get install -y silversearcher-ag
+	apt-get install -y python3-pip
 }
 
 function install::lpass() {
+	echo "* Installing the lastpass cli"
+
 	apt-get --no-install-recommends -yqq install \
-		bash-completion \
 		build-essential \
 		cmake \
 		libcurl4  \
@@ -117,7 +127,6 @@ function install::lpass() {
 
 	rm -rf /tmp/lpass
 	rm -rf /tmp/lpass.tgz
-
 }
 
 main
