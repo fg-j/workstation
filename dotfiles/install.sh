@@ -71,8 +71,9 @@ function install::docker() {
 	DEBIAN_FRONTEND=noninteractive apt-get -y update
 	DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io
 
-	usermod -aG docker "${USER}"
+	usermod -aG docker ubuntu
 	newgrp docker
+	newgrp -
 }
 
 function install::packages() {
