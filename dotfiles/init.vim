@@ -17,6 +17,7 @@ call plug#end()
 syntax on " Syntax highlighting FTW
 set background=dark " Set background to dark for base16
 set directory=/tmp " Move swp to a standard location
+colorscheme Tomorrow-Night
 :let mapleader = ',' " Remap the leader key
 
 " Yank to system clipboard
