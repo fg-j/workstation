@@ -18,6 +18,21 @@ variable "service_account_key" {
   type = string
 }
 
+resource "google_compute_disk" "default" {
+  name  = "${var.vm_name}-disk"
+  type  = "pd-ssd"
+  zone  = "us-central1-a"
+  image = "ubuntu-os-cloud/ubuntu-1804-lts"
+  size = 1000
+  physical_block_size_bytes = 4096
+}
+
+resource "google_compute_attached_disk" "default" {
+  disk     = google_compute_disk.default.id
+  instance = google_compute_instance.default.id
+  zone    = "us-central1-a"
+}
+
 resource "google_compute_instance" "default" {
   name         = var.vm_name
   machine_type = "n1-standard-8"
