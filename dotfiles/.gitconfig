@@ -13,6 +13,3 @@
   fetchJobs = 6
 [diff]
   compactionHeuristic = true
-[user]
-  email = ryan.moran@gmail.com
-  name = Ryan Moran
