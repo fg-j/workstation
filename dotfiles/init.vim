@@ -1,7 +1,7 @@
 " Plug for plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'flazz/vim-colorschemes' " All the colorschemes
+Plug 'chriskempson/base16-vim'
 Plug 'tpope/vim-fugitive'     " Git Commands
 Plug 'fatih/vim-go'           " Lets do go development
 Plug 'benekastah/neomake'     " Nevoim specific plugins
@@ -11,14 +11,14 @@ Plug 'tpope/vim-vinegar'      " Make netrw way better
 Plug 'mileszs/ack.vim'        " search
 Plug 'ctrlpvim/ctrlp.vim'     " Fuzzy finder
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' } " autocomplete
-
 call plug#end()
 
-syntax on " Syntax highlighting FTW
+
 set background=dark " Set background to dark for base16
+syntax on " Syntax highlighting FTW
 set directory=/tmp " Move swp to a standard location
-colorscheme Tomorrow-Night
 :let mapleader = ',' " Remap the leader key
+colorscheme base16-tomorrow-night
 
 " Yank to system clipboard
 vnoremap <leader>y "*y
@@ -117,6 +117,7 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 
 endif
+
 
 " hit the space bar to remove search highlights
 nnoremap <space> :noh<cr>
