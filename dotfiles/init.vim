@@ -1,6 +1,8 @@
 " Plug for plugins
 call plug#begin('~/.vim/plugged')
 
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'chriskempson/base16-vim'
 Plug 'tpope/vim-fugitive'     " Git Commands
 Plug 'fatih/vim-go'           " Lets do go development
@@ -121,3 +123,6 @@ endif
 
 " hit the space bar to remove search highlights
 nnoremap <space> :noh<cr>
+highlight LineNr ctermfg=grey ctermbg=black
+highlight Visual cterm=reverse ctermbg=NONE
+let g:airline_theme='dark_minimal'

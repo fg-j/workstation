@@ -58,6 +58,10 @@ resource "google_compute_instance" "default" {
     }
   }
 
+  lifecycle {
+    ignore_changes = [attached_disk]
+  }
+
   metadata = {
     ssh-keys = "${format("ubuntu:%s", tls_private_key.my-key.public_key_openssh)}"
   }
