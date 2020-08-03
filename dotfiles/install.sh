@@ -6,7 +6,6 @@ readonly WORKSPACE="${HOME}/workspace"
 readonly GOPATH="${HOME}/go"
 
 function main() {
-	chown -R ubuntu:ubuntu "${HOME}"
 	ln -sf "${PROGDIR}/.bash_profile" "${HOME}/.bash_profile"
 	ln -sf "${PROGDIR}/.gitconfig" "${HOME}/.gitconfig"
 	ln -sf "${PROGDIR}/.inputrc" "${HOME}/.inputrc"
@@ -28,6 +27,7 @@ function main() {
 	go get -u github.com/onsi/ginkgo/ginkgo
 	go get -u github.com/onsi/gomega
 
+	chown -R ubuntu:ubuntu "${HOME}"
 
 	echo "Success!"
 }

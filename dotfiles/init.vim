@@ -123,6 +123,6 @@ endif
 
 " hit the space bar to remove search highlights
 nnoremap <space> :noh<cr>
-highlight LineNr ctermfg=grey ctermbg=black
-highlight Visual cterm=reverse ctermbg=NONE
-let g:airline_theme='dark_minimal'
+let g:airline_theme='base16_tomorrow'
+let base16colorspace=256
+set termguicolors
