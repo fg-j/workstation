@@ -19,7 +19,6 @@ function main() {
         done
 
         ssh -i /tmp/key "ubuntu@$(terraform output vm_ip)" <<'ENDSSH'
-echo "HELLO"
 pushd "${HOME}" > /dev/null
     git clone https://github.com/joshzarrabi/workstation
     pushd workstation/dotfiles > /dev/null
