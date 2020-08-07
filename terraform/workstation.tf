@@ -1,9 +1,12 @@
 provider "google" {
   project     = var.project
   region      = "us-central1"
-  credentials = var.service_account_key
 
   version = "~> 2.5"
+}
+
+terraform {
+  backend "gcs" {}
 }
 
 variable "project" {
@@ -11,10 +14,6 @@ variable "project" {
 }
 
 variable "vm_name" {
-  type = string
-}
-
-variable "service_account_key" {
   type = string
 }
 
