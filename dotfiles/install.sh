@@ -22,6 +22,7 @@ function main() {
 	install::neovim
 	install::lpass
   install::git-duet
+  install::gcloud
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
@@ -101,6 +102,14 @@ function install::packages() {
 	apt-get install -y silversearcher-ag
 	apt-get install -y python3-pip
 	apt-get install -y tig
+}
+
+function install::gcloud() {
+	echo "* Installing gcloud cli"
+
+  echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+  curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+  apt-get -y update && apt-get -y install google-cloud-sdk
 }
 
 function install::lpass() {
