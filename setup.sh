@@ -3,6 +3,7 @@ set -eu
 set -o pipefail
 
 readonly PROGDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+vm_ip=""
 
 function main() {
     local vm_name
@@ -73,14 +74,17 @@ function workstation::create() {
             -var "vm_name=${vm_name}" \
             -var "project=${gcp_project}"
 
-        terraform output ssh_private_key > /tmp/key
+        GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform output ssh_private_key > /tmp/key
         chmod 600 /tmp/key
 
-        ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "$(terraform output vm_ip)"
+        vm_ip="$(GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform output vm_ip)"
+
+        ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${vm_ip}"
 
         echo "waiting for vm"
-        while ! ping -c 1 -n -w 1 "$(terraform output vm_ip)" &> /dev/null
+        while ! ping -c 1 -n "${vm_ip}" &> /dev/null
         do
+            sleep 1
             printf "%c" "."
         done
 
@@ -90,7 +94,7 @@ function workstation::create() {
 
 function workstation::setup(){
     pushd "${PROGDIR}/terraform" > /dev/null
-        ssh -i /tmp/key "ubuntu@$(terraform output vm_ip)" <<'ENDSSH'
+    ssh -i /tmp/key "ubuntu@${vm_ip}" <<'ENDSSH'
 pushd "${HOME}" > /dev/null
     git clone https://github.com/joshzarrabi/workstation
     pushd workstation/dotfiles > /dev/null
