@@ -102,6 +102,7 @@ function install::packages() {
 	apt-get install -y silversearcher-ag
 	apt-get install -y python3-pip
 	apt-get install -y tig
+  apt-get install -y unzip
 }
 
 function install::gcloud() {
