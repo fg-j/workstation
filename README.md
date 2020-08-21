@@ -18,6 +18,20 @@ OPTIONS
 $ ./setup.sh -n my-vm -p my-gcp-project -s /tmp/my-gcp-service-account-key.json
 ```
 
+# To see what vms are in your pool
+
+```
+list.sh [OPTIONS]
+
+OPTIONS
+  --help, -h                                                prints the command usage
+  --service-account-json, -s <path/to/service/account/json> path to gcp service account json to authenticate with
+```
+
+```bash
+$ ./list.sh -s /tmp/my-gcp-service-account-key.json
+```
+
 # To log onto any vm in your pool
 
 ```
