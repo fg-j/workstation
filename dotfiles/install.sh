@@ -23,6 +23,7 @@ function main() {
 	install::lpass
   install::git-duet
   install::gcloud
+  install::pack
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
@@ -148,6 +149,10 @@ function install::git-duet() {
   curl -sL -o /tmp/git-duet.tgz "https://github.com/git-duet/git-duet/releases/download/0.7.0/linux_amd64.tar.gz"
   tar -xvf /tmp/git-duet.tgz -C /usr/local/bin/
   rm -rf /tmp/git-duet
+}
+
+function install::pack() {
+  (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.13.1/pack-v0.13.1-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
 }
 
 main
