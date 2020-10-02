@@ -73,6 +73,8 @@ function workstation::delete() {
           -var "vm_name=${vm_name}" \
           -var "project=${gcp_project}"
 
+    rm .terraform/terraform.tfstate
+
   popd > /dev/null
 }
 
@@ -84,7 +86,7 @@ function tfstate::delete() {
   service_account_json="${2}"
 
   gcloud auth activate-service-account --key-file="${service_account_json}"
-  gsutil rm -rf "gs://cf-buildpacks-workstations/${vm_name}"
+  gsutil rm -r "gs://cf-buildpacks-workstations/${vm_name}"
 }
 
 main "${@:-}"
