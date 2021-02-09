@@ -57,17 +57,17 @@ function tfstate::download(){
   service_account_json="${2}"
 
   gcloud auth activate-service-account --key-file="${service_account_json}"
-  gsutil cp "gs://cf-buildpacks-workstations/${vm_name}/default.tfstate" "/tmp/{vm_name}.tfstate"
+  gsutil cp "gs://cf-buildpacks-workstations/${vm_name}/default.tfstate" "/tmp/${vm_name}.tfstate"
 }
 
 function workstation::ssh() {
   local vm_name
   vm_name="${1}"
 
-  terraform output -state "/tmp/{vm_name}.tfstate" ssh_private_key > /tmp/key
+  terraform output -state "/tmp/${vm_name}.tfstate" ssh_private_key > /tmp/key
   chmod 600 /tmp/key
 
-  ssh -i /tmp/key ubuntu@"$(terraform output -state "/tmp/{vm_name}.tfstate" vm_ip)"
+  ssh -i /tmp/key ubuntu@"$(terraform output -state "/tmp/${vm_name}.tfstate" vm_ip)"
 }
 
 main "${@:-}"
