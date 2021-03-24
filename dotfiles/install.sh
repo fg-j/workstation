@@ -152,7 +152,7 @@ function install::git-duet() {
 }
 
 function install::pack() {
-  (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.13.1/pack-v0.13.1-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
+  (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.17.0/pack-v0.17.0-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
 }
 
 main
