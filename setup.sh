@@ -104,8 +104,10 @@ function workstation::setup(){
     ssh -i /tmp/key "ubuntu@${vm_ip}" <<'ENDSSH'
 pushd "${HOME}" > /dev/null
     git clone https://github.com/fg-j/workstation
-    git co improve-onboarding
-    pushd workstation/dotfiles > /dev/null
+    pushd workstation > /dev/null
+      git co improve-onboarding
+    popd > /dev/null
+    pushd workstation/dotfiles
         sudo ./install.sh
     popd > /dev/null
 popd > /dev/null

@@ -65,7 +65,7 @@ function workstation::delete() {
   service_account_json="${2}"
 
   pushd "${PROGDIR}/terraform" > /dev/null
-      GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform init \
+  GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform init -reconfigure \
           -backend-config="bucket=cf-buildpacks-workstations" \
           -backend-config="prefix=${vm_name}"
 
