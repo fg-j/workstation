@@ -25,13 +25,14 @@ function main() {
   install::gcloud
   install::pack
   install::jam
-  install::fly
-  install::bosh
-  install::tfenv
-  install::terraform
-  install::bbl
-  # install::credhub
-  install::cf
+  # Below, the nice-to-haves. Don't fail installation if these don't work
+  install::fly || true
+  install::bosh || true
+  install::tfenv || true
+  install::terraform || true
+  install::bbl || true
+  install::credhub || true
+  install::cf || true
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
@@ -219,10 +220,10 @@ function install::bbl(){
   sudo mv /tmp/bbl /usr/local/bin/bbl
 }
 
-# function install::credhub(){
-# 	echo "* Installing credhub cli"
-#   curl -sSL "https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/2.9.0/credhub-linux-2.9.0.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv credhub
-# }
+function install::credhub(){
+	echo "* Installing credhub cli"
+  curl -sSL "https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/2.9.0/credhub-linux-2.9.0.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv ./credhub
+}
 
 function install::cf(){
 	echo "* Installing cf cli"
