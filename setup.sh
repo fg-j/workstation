@@ -105,7 +105,7 @@ function workstation::setup(){
 pushd "${HOME}" > /dev/null
     git clone https://github.com/fg-j/workstation
     pushd workstation > /dev/null
-      git co improve-onboarding
+      git checkout improve-onboarding
     popd > /dev/null
     pushd workstation/dotfiles
         sudo ./install.sh
