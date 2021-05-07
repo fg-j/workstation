@@ -30,7 +30,7 @@ function main() {
   install::tfenv
   install::terraform
   install::bbl
-  install::credhub
+  # install::credhub
   install::cf
 
 	go get -u github.com/ryanmoran/faux
@@ -161,6 +161,7 @@ function install::git-duet() {
 }
 
 function install::pack() {
+	echo "* Installing pack cli"
   local version
   version="$(
     curl "https://raw.githubusercontent.com/paketo-buildpacks/github-config/main/implementation/scripts/.util/tools.json"\
@@ -172,6 +173,7 @@ function install::pack() {
 }
 
 function install::jam() {
+	echo "* Installing jam cli"
   local version
   version="$(
     curl "https://raw.githubusercontent.com/paketo-buildpacks/github-config/main/implementation/scripts/.util/tools.json"\
@@ -188,6 +190,7 @@ function install::jam() {
 }
 
 function install::fly(){
+	echo "* Installing fly cli"
   curl "https://buildpacks.ci.cf-app.com/api/v1/cli?arch=amd64&platform=linux" \
     --silent \
     --location \
@@ -197,6 +200,7 @@ function install::fly(){
 }
 
 function install::bosh(){
+	echo "* Installing bosh cli"
   curl "https://github.com/cloudfoundry/bosh-cli/releases/download/v6.4.3/bosh-cli-6.4.3-linux-amd64" \
     --silent \
     --location \
@@ -206,6 +210,7 @@ function install::bosh(){
 }
 
 function install::bbl(){
+	echo "* Installing bbl"
   curl "https://github.com/cloudfoundry/bosh-bootloader/releases/download/v8.4.40/bbl-v8.4.40_linux_x86-64"\
     --silent \
     --location \
@@ -214,17 +219,21 @@ function install::bbl(){
   sudo mv /tmp/bbl /usr/local/bin/bbl
 }
 
-function install::credhub(){
-  curl -sSL "https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/2.9.0/credhub-linux-2.9.0.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv credhub
-}
+# function install::credhub(){
+# 	echo "* Installing credhub cli"
+#   curl -sSL "https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/2.9.0/credhub-linux-2.9.0.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv credhub
+# }
 
 function install::cf(){
+	echo "* Installing cf cli"
   curl -sSL "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github&version=v6"| sudo tar -C /usr/local/bin/ --no-same-owner -xzv cf
 }
 
 function install::tfenv(){
-  git clone https://github.com/tfutils/tfenv.git ~/.tfenv
-  sudo ln -s ~/.tfenv/bin/* /usr/local/bin
+  if [ ! -d ~/.tfenv ]; then
+    git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+    sudo ln -s ~/.tfenv/bin/* /usr/local/bin
+  fi
   tfenv init
 }
 
