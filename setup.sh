@@ -58,9 +58,9 @@ USAGE
 }
 
 function terraform::update(){
-  echo "Upgrading to the terraform 0.13.5..."
-  tfenv install "0.13.5"
-  tfenv use "0.13.5"
+  echo "Upgrading to the latest version of terraform"
+  tfenv install latest
+  tfenv use latest
 }
 
 function workstation::create() {
@@ -81,16 +81,15 @@ function workstation::create() {
             -var "vm_name=${vm_name}" \
             -var "project=${gcp_project}"
 
-        GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform output ssh_private_key > /tmp/key
+        GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform output --json | jq -r .ssh_private_key.value > /tmp/key
         chmod 600 /tmp/key
 
-        vm_ip="$(GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform output vm_ip)"
+        vm_ip="$(GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform output --json | jq -r .vm_ip.value)"
 
         ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${vm_ip}"
 
         echo "waiting for vm to become available"
         while ! nc -z "${vm_ip}" 22 > /dev/null
-        # while ! ping -c 1 -n "${vm_ip}:22" &> /dev/null
         do
             sleep 1
             printf "%c" "."
@@ -104,7 +103,7 @@ function workstation::setup(){
     pushd "${PROGDIR}/terraform" > /dev/null
     ssh -i /tmp/key "ubuntu@${vm_ip}" <<'ENDSSH'
 pushd "${HOME}" > /dev/null
-    git clone https://github.com/joshzarrabi/workstation
+    git clone https://github.com/fg-j/workstation
     pushd workstation/dotfiles > /dev/null
         sudo ./install.sh
     popd > /dev/null

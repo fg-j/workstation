@@ -75,10 +75,10 @@ function workstation::ssh() {
   local vm_name
   vm_name="${1}"
 
-  terraform output -state "/tmp/${vm_name}.tfstate" ssh_private_key > /tmp/key
+  terraform output -state "/tmp/${vm_name}.tfstate" --json | jq -r .ssh_private_key.value > /tmp/key
   chmod 600 /tmp/key
 
-  ssh -i /tmp/key ubuntu@"$(terraform output -state "/tmp/${vm_name}.tfstate" vm_ip)"
+  ssh -i /tmp/key ubuntu@"$(terraform output -state "/tmp/${vm_name}.tfstate" --json | jq -r .vm_ip.value)"
 }
 
 main "${@:-}"

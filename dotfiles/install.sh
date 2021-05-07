@@ -25,6 +25,12 @@ function main() {
   install::gcloud
   install::pack
   install::jam
+  install::fly
+  install::bosh
+  install::tfenv
+  install::terraform
+  install::bbl
+  install::credhub
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
@@ -94,6 +100,11 @@ function install::packages() {
 	apt-get -y upgrade
 
 	apt-get install -y bash-completion
+
+  wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+  echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+  sudo apt-get install cf7-cli
+
 	apt-get install -y jq
 	apt-get install -y gcc
 
@@ -104,6 +115,7 @@ function install::packages() {
 	apt-get install -y silversearcher-ag
 	apt-get install -y python3-pip
 	apt-get install -y tig
+  apt-get install -y tree
   apt-get install -y unzip
 }
 
@@ -160,7 +172,7 @@ function install::pack() {
       --location \
     | jq -r .pack
   )"
-  (curl -sSL "https://github.com/buildpacks/pack/releases/download/${version}/pack-${version}-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
+  curl -sSL "https://github.com/buildpacks/pack/releases/download/${version}/pack-${version}-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack
 }
 
 function install::jam() {
@@ -177,6 +189,48 @@ function install::jam() {
       --output /tmp/jam
     chmod +x /tmp/jam
     sudo mv /tmp/jam /usr/local/bin/jam
+}
+
+function install::fly(){
+  curl "https://buildpacks.ci.cf-app.com/api/v1/cli?arch=amd64&platform=linux" \
+    --silent \
+    --location \
+    --output /tmp/fly
+  chmod +x /tmp/fly
+  sudo mv /tmp/fly /usr/local/bin/fly
+}
+
+function install::bosh(){
+  curl "https://github.com/cloudfoundry/bosh-cli/releases/download/v6.4.3/bosh-cli-6.4.3-linux-amd64" \
+    --silent \
+    --location \
+    --output /tmp/bosh
+  chmod +x /tmp/bosh
+  sudo mv /tmp/bosh /usr/local/bin/bosh
+}
+
+function install::bbl(){
+  curl "https://github.com/cloudfoundry/bosh-bootloader/releases/download/v8.4.40/bbl-v8.4.40_linux_x86-64"\
+    --silent \
+    --location \
+    --output /tmp/bbl
+  chmod +x /tmp/bbl
+  sudo mv /tmp/bbl /usr/local/bin/bbl
+}
+
+function install::credhub(){
+  curl -sSL "https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/2.9.0/credhub-linux-2.9.0.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv credhub
+}
+
+function install:tfenv(){
+  git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+  sudo ln -s ~/.tfenv/bin/* /usr/local/bin
+  tfenv init
+}
+
+function install:terraform(){
+  tfenv install latest
+  tfenv use latest
 }
 
 main
