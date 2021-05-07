@@ -31,6 +31,7 @@ function main() {
   install::terraform
   install::bbl
   install::credhub
+  install::cf
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
@@ -100,11 +101,6 @@ function install::packages() {
 	apt-get -y upgrade
 
 	apt-get install -y bash-completion
-
-  wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
-  echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-  sudo apt-get install cf7-cli
-
 	apt-get install -y jq
 	apt-get install -y gcc
 
@@ -222,13 +218,17 @@ function install::credhub(){
   curl -sSL "https://github.com/cloudfoundry-incubator/credhub-cli/releases/download/2.9.0/credhub-linux-2.9.0.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv credhub
 }
 
-function install:tfenv(){
+function install::cf(){
+  curl -sSL "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github&version=v6"| sudo tar -C /usr/local/bin/ --no-same-owner -xzv cf
+}
+
+function install::tfenv(){
   git clone https://github.com/tfutils/tfenv.git ~/.tfenv
   sudo ln -s ~/.tfenv/bin/* /usr/local/bin
   tfenv init
 }
 
-function install:terraform(){
+function install::terraform(){
   tfenv install latest
   tfenv use latest
 }
