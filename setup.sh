@@ -39,6 +39,7 @@ function main() {
         esac
     done
 
+    terraform::update
     workstation::create "${vm_name}" "${gcp_project}" "${service_account_json}"
     workstation::setup
 }
@@ -56,6 +57,12 @@ OPTIONS
 USAGE
 }
 
+function terraform::update(){
+  echo "Upgrading to the terraform 0.13.5..."
+  tfenv install "0.13.5"
+  tfenv use "0.13.5"
+}
+
 function workstation::create() {
     local vm_name
     local gcp_project
@@ -66,7 +73,7 @@ function workstation::create() {
     service_account_json="${3}"
 
     pushd "${PROGDIR}/terraform" > /dev/null
-        GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform init \
+    GOOGLE_APPLICATION_CREDENTIALS="${service_account_json}" terraform init -reconfigure \
             -backend-config="bucket=cf-buildpacks-workstations" \
             -backend-config="prefix=${vm_name}"
 
@@ -81,8 +88,9 @@ function workstation::create() {
 
         ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${vm_ip}"
 
-        echo "waiting for vm"
-        while ! ping -c 1 -n "${vm_ip}" &> /dev/null
+        echo "waiting for vm to become available"
+        while ! nc -z "${vm_ip}" 22 > /dev/null
+        # while ! ping -c 1 -n "${vm_ip}:22" &> /dev/null
         do
             sleep 1
             printf "%c" "."

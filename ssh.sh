@@ -34,6 +34,7 @@ function main() {
     done
 
     tfstate::download "${vm_name}" "${service_account_json}"
+    terraform::update_version "${vm_name}"
     workstation::ssh "${vm_name}"
 }
 
@@ -58,6 +59,16 @@ function tfstate::download(){
 
   gcloud auth activate-service-account --key-file="${service_account_json}"
   gsutil cp "gs://cf-buildpacks-workstations/${vm_name}/default.tfstate" "/tmp/${vm_name}.tfstate"
+}
+
+function terraform::update_version(){
+  local vm_name
+
+  echo "Updating terraform version to match VM creator's version..."
+  vm_name="${1}"
+  version=$(cat "/tmp/${vm_name}.tfstate" | jq -r .terraform_version)
+  tfenv install "${version}"
+  tfenv use "${version}"
 }
 
 function workstation::ssh() {

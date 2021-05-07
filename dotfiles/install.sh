@@ -24,6 +24,7 @@ function main() {
   install::git-duet
   install::gcloud
   install::pack
+  install::jam
 
 	go get -u github.com/ryanmoran/faux
 	go get -u github.com/onsi/ginkgo/ginkgo
@@ -152,7 +153,30 @@ function install::git-duet() {
 }
 
 function install::pack() {
-  (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.17.0/pack-v0.17.0-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
+  local version
+  version="$(
+    curl "https://raw.githubusercontent.com/paketo-buildpacks/github-config/main/implementation/scripts/.util/tools.json"\
+      --silent \
+      --location \
+    | jq -r .pack
+  )"
+  (curl -sSL "https://github.com/buildpacks/pack/releases/download/${version}/pack-${version}-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
+}
+
+function install::jam() {
+  local version
+  version="$(
+    curl "https://raw.githubusercontent.com/paketo-buildpacks/github-config/main/implementation/scripts/.util/tools.json"\
+      --silent \
+      --location \
+    | jq -r .jam
+  )"
+  curl "https://github.com/paketo-buildpacks/packit/releases/download/${version}/jam-linux" \
+      --silent \
+      --location \
+      --output /tmp/jam
+    chmod +x /tmp/jam
+    sudo mv /tmp/jam /usr/local/bin/jam
 }
 
 main

@@ -4,6 +4,12 @@ Usage
 
 # To create a pairing ready vm
 
+## Prerequisites
+
+- Install [tfenv](https://github.com/tfutils/tfenv) Terraform version manager
+- Install the latest version of Terraform using `tfenv install <version>` (See [terraform release page](https://github.com/hashicorp/terraform/releases))
+- `nc` (netcat)
+
 ```
 setup.sh [OPTIONS]
 
