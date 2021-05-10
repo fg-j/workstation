@@ -52,4 +52,7 @@ OPTIONS
 ```bash
 $ ./ssh.sh -n my-vm -s /tmp/my-gcp-service-account-key.json
 ```
+## Further setup
 
+After using `./setup.sh` to stand up a VM and perform initial configuration,
+see `${HOME}/workstation/dotfiles/README.md` on the VM for further setup steps.
