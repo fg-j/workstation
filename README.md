@@ -7,7 +7,7 @@ Usage
 ## Prerequisites
 
 - Install [tfenv](https://github.com/tfutils/tfenv) Terraform version manager
-- Install the latest version of Terraform using `tfenv install <version>` (See [terraform release page](https://github.com/hashicorp/terraform/releases))
+- Install the latest version of Terraform using `tfenv install latest && tfenv use latest` (See [terraform release page](https://github.com/hashicorp/terraform/releases))
 - `nc` (netcat)
 
 ```
