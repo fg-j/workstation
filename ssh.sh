@@ -22,7 +22,7 @@ function main() {
             ;;
 
           --service-account-json|-s)
-            service_account_json="${2}"
+            [ "${2}" != "${2#/}" ] && service_account_json="${2}" || service_account_json="${PWD}/${2}"
             shift 2
             ;;
 
