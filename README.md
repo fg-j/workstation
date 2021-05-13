@@ -1,15 +1,12 @@
 # Ephemeral workstation setup
 
-Usage
-
-# To create a pairing ready vm
-
 ## Prerequisites
 
 - Install [tfenv](https://github.com/tfutils/tfenv) Terraform version manager
 - Install the latest version of Terraform using `tfenv install latest && tfenv use latest` (See [terraform release page](https://github.com/hashicorp/terraform/releases))
 - `nc` (netcat)
 
+# To create a pairing ready vm
 ```
 setup.sh [OPTIONS]
 
